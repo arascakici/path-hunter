@@ -16,5 +16,5 @@
     "forceConsistentCasingInFileNames": true,
     "noEmit": true
   },
-  "include": ["src", "bot", "api", "test"]
+  "include": ["src", "bot", "api", "scripts", "test"]
 }

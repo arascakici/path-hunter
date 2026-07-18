@@ -10,6 +10,7 @@
   "scripts": {
     "bot:scan": "tsx bot/cli.ts scan",
     "bot:execute": "tsx bot/cli.ts execute",
+    "dev:api": "tsx scripts/dev-api.ts",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest"

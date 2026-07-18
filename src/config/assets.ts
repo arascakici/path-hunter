@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { z } from 'zod';
+import type { Env } from './env.js';
 
 /**
  * Loads and validates the asset list that defines the search space for
@@ -92,15 +93,47 @@ export function loadAssets(path: string): AssetsConfig {
     throw new Error(`Assets config at "${path}" is not valid JSON: ${errorText(err)}`);
   }
 
+  return parseAssets(data, `assets config at "${path}"`);
+}
+
+/** Validates already-parsed asset data, throwing a readable error on failure. */
+export function parseAssets(data: unknown, source = 'assets config'): AssetsConfig {
   const parsed = assetsConfigSchema.safeParse(data);
   if (!parsed.success) {
     const issues = parsed.error.issues
       .map((i) => `  - ${i.path.join('.') || '(root)'}: ${i.message}`)
       .join('\n');
-    throw new Error(`Invalid assets config at "${path}":\n${issues}`);
+    throw new Error(`Invalid ${source}:\n${issues}`);
+  }
+  return parsed.data;
+}
+
+/**
+ * Resolves the asset list for the current environment. Prefers inline
+ * `ASSETS_JSON` (handy on serverless platforms); otherwise reads the file at
+ * `ASSETS_CONFIG`, falling back to the committed example so a fresh deploy
+ * still works out of the box.
+ */
+export function resolveAssets(env: Env): AssetsConfig {
+  if (env.ASSETS_JSON) {
+    let data: unknown;
+    try {
+      data = JSON.parse(env.ASSETS_JSON);
+    } catch (err) {
+      throw new Error(`ASSETS_JSON is not valid JSON: ${errorText(err)}`);
+    }
+    return parseAssets(data, 'ASSETS_JSON');
   }
 
-  return parsed.data;
+  try {
+    return loadAssets(env.ASSETS_CONFIG);
+  } catch (err) {
+    try {
+      return loadAssets('./config/assets.example.json');
+    } catch {
+      throw err instanceof Error ? err : new Error(String(err));
+    }
+  }
 }
 
 function errorText(err: unknown): string {

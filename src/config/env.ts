@@ -24,6 +24,9 @@ const envSchema = z
     PROFIT_THRESHOLD_PCT: z.coerce.number().min(0).default(0.5),
     START_AMOUNT: z.coerce.number().positive().default(100),
     ASSETS_CONFIG: z.string().min(1).default('./config/assets.json'),
+    // Inline asset list as a JSON string. Preferred in serverless environments
+    // (e.g. Vercel) where reading a local config file is awkward.
+    ASSETS_JSON: z.string().optional(),
     EXECUTE_ENABLED: envBool,
     EXECUTE_SECRET_KEY: z
       .string()

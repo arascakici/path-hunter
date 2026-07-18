@@ -4,9 +4,12 @@
 export { loadEnv, isTestnet, type Env } from './config/env.js';
 export {
   loadAssets,
+  parseAssets,
+  resolveAssets,
   type AssetConfig,
   type AssetsConfig,
 } from './config/assets.js';
+export { runScanApi, type ApiScanResponse } from './api/scan-handler.js';
 export {
   createLogger,
   logger,
