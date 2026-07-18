@@ -1,0 +1,373 @@
+/*
+ * PathHunter panel — "terminal / financial dashboard" design system.
+ *
+ * Deliberately flat: solid colors only. The background texture is a tartan
+ * (ekose) built from repeating-linear-gradients with HARD color stops, so it
+ * renders as crisp 1px lines — a woven grid, not a color fade. No gradients as
+ * transitions, no glows, no pulsing animation anywhere.
+ */
+
+:root {
+  --bg: #0e1216;
+  --bg-weave-a: rgba(46, 196, 182, 0.045); /* turquoise thread */
+  --bg-weave-b: rgba(245, 166, 35, 0.045); /* amber thread */
+  --panel: #141b21;
+  --panel-2: #10161b;
+  --line: #26313a;
+  --line-strong: #33424e;
+  --text: #d9e2e8;
+  --muted: #718491;
+  --amber: #f5a623;
+  --turquoise: #2ec4b6;
+  --danger: #e5484d;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", "Fira Code", Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  background-color: var(--bg);
+  /* Tartan weave: two thin turquoise + two thin amber threads, hard stops. */
+  background-image:
+    repeating-linear-gradient(90deg, transparent 0 31px, var(--bg-weave-a) 31px 32px),
+    repeating-linear-gradient(0deg, transparent 0 31px, var(--bg-weave-a) 31px 32px),
+    repeating-linear-gradient(90deg, transparent 0 127px, var(--bg-weave-b) 127px 129px),
+    repeating-linear-gradient(0deg, transparent 0 127px, var(--bg-weave-b) 127px 129px);
+}
+
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 64px;
+}
+
+/* ---- Header ------------------------------------------------------------- */
+
+.masthead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  border: 2px solid var(--text);
+  background: var(--panel);
+  padding: 16px 20px;
+}
+
+.masthead__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.masthead__mark {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text);
+}
+
+.masthead__mark b {
+  color: var(--amber);
+}
+
+.masthead__tag {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--line-strong);
+  padding: 3px 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+  color: var(--muted);
+}
+
+button.badge {
+  cursor: pointer;
+  font-family: inherit;
+  background: var(--panel-2);
+}
+
+button.badge:hover {
+  border-color: var(--amber);
+  color: var(--amber);
+}
+
+.badge--net {
+  border-color: var(--turquoise);
+  color: var(--turquoise);
+}
+
+.badge__dot {
+  width: 7px;
+  height: 7px;
+  background: var(--turquoise);
+  /* solid square marker — intentionally NOT a pulsing dot */
+}
+
+/* ---- Status strip ------------------------------------------------------- */
+
+.status {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 2px solid var(--text);
+  border-top: none;
+}
+
+.status__cell {
+  padding: 12px 16px;
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.status__cell:last-child {
+  border-right: none;
+}
+
+.status__label {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 10px;
+}
+
+.status__value {
+  font-size: 18px;
+  color: var(--text);
+  margin-top: 4px;
+}
+
+.status__value--amber {
+  color: var(--amber);
+}
+
+.status__value--turq {
+  color: var(--turquoise);
+}
+
+/* ---- Section headings --------------------------------------------------- */
+
+.section {
+  margin-top: 28px;
+}
+
+.section__title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.section__title::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  background: var(--amber);
+}
+
+.section__count {
+  color: var(--turquoise);
+}
+
+/* ---- Opportunity cards -------------------------------------------------- */
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.card {
+  border: 2px solid var(--turquoise);
+  background: var(--panel);
+  padding: 14px 16px;
+  /* hard offset shadow — solid, no blur/glow */
+  box-shadow: 6px 6px 0 0 rgba(46, 196, 182, 0.18);
+}
+
+.card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.card__cycle {
+  font-size: 15px;
+  color: var(--text);
+  letter-spacing: 0.02em;
+}
+
+.card__profit {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--turquoise);
+  white-space: nowrap;
+}
+
+.card__amounts {
+  color: var(--muted);
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.card__legs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.leg {
+  border: 1px solid var(--line-strong);
+  padding: 2px 8px;
+  font-size: 11px;
+  color: var(--text);
+  background: var(--panel-2);
+}
+
+.leg b {
+  color: var(--amber);
+  font-weight: 600;
+}
+
+/* ---- Results ticker table ----------------------------------------------- */
+
+.ticker {
+  width: 100%;
+  border-collapse: collapse;
+  border: 2px solid var(--text);
+  font-size: 13px;
+}
+
+.ticker thead th {
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 10px;
+  color: var(--muted);
+  padding: 9px 12px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.ticker th.num,
+.ticker td.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.ticker tbody td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+
+.ticker tbody tr:nth-child(even) td {
+  background: var(--panel);
+}
+
+.ticker tbody tr.is-opp td {
+  background: rgba(46, 196, 182, 0.08);
+}
+
+.pos {
+  color: var(--turquoise);
+}
+
+.neg {
+  color: var(--danger);
+}
+
+.chip {
+  display: inline-block;
+  padding: 1px 7px;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+}
+
+.chip--yes {
+  border-color: var(--turquoise);
+  color: var(--turquoise);
+}
+
+.chip--no {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+/* ---- Empty / loading / error ------------------------------------------- */
+
+.notice {
+  border: 2px dashed var(--line-strong);
+  background: var(--panel-2);
+  padding: 22px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.notice--error {
+  border-color: var(--danger);
+  color: var(--danger);
+  border-style: solid;
+}
+
+.notice b {
+  color: var(--amber);
+}
+
+/* ---- Footer ------------------------------------------------------------- */
+
+.foot {
+  margin-top: 32px;
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.foot a {
+  color: var(--turquoise);
+  text-decoration: none;
+}
+
+@media (max-width: 620px) {
+  .masthead {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .ticker .hide-sm {
+    display: none;
+  }
+}
