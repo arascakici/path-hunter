@@ -11,6 +11,7 @@
     "bot:scan": "tsx bot/cli.ts scan",
     "bot:execute": "tsx bot/cli.ts execute",
     "dev:api": "tsx scripts/dev-api.ts",
+    "seed": "tsx scripts/seed-testnet.ts",
     "web": "vite web",
     "dev": "concurrently -k -n api,web -c yellow,cyan \"npm:dev:api\" \"npm:web\"",
     "build:web": "vite build web",
