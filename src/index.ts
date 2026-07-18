@@ -40,3 +40,9 @@ export {
   buildTriangularCycles,
   type SimulationOptions,
 } from './arbitrage/triangular.js';
+export {
+  Scanner,
+  type ScannerOptions,
+  type ScanResult,
+  type CycleScan,
+} from './arbitrage/scanner.js';
