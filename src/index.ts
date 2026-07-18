@@ -16,3 +16,11 @@ export {
   type LogContext,
   type LoggerOptions,
 } from './logger/logger.js';
+export {
+  HorizonClient,
+  toSdkAsset,
+  assetId,
+  assetIdFromSdk,
+  type HorizonClientOptions,
+} from './horizon/client.js';
+export type { OrderBook, OrderBookLevel, AssetId } from './arbitrage/types.js';
