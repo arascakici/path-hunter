@@ -1,0 +1,28 @@
+{
+  "name": "path-hunter",
+  "version": "0.1.0",
+  "description": "PathHunter — a Stellar testnet triangular-arbitrage scanner bot with a React panel.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "bot:scan": "tsx bot/cli.ts scan",
+    "bot:execute": "tsx bot/cli.ts execute",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}
