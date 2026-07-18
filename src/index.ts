@@ -23,4 +23,20 @@ export {
   assetIdFromSdk,
   type HorizonClientOptions,
 } from './horizon/client.js';
-export type { OrderBook, OrderBookLevel, AssetId } from './arbitrage/types.js';
+export type {
+  OrderBook,
+  OrderBookLevel,
+  AssetId,
+  Cycle,
+  AssetConfigRef,
+  LegResult,
+  CycleSimulation,
+  Opportunity,
+} from './arbitrage/types.js';
+export {
+  fillBuy,
+  simulateCycle,
+  isProfitable,
+  buildTriangularCycles,
+  type SimulationOptions,
+} from './arbitrage/triangular.js';
