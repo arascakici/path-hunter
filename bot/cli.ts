@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 import { loadEnv, type Env } from '../src/config/env.js';
 import { runScan } from './scan.js';
+import { runExecute } from './execute.js';
 
 /**
  * PathHunter CLI entry point.
@@ -21,7 +22,15 @@ Options:
   --threshold <pct>         Override profit threshold (percent)
   --amount <n>              Override start amount
   --assets <path>           Override assets config path
+
+Execute-only options:
+  --dry-run                 Build & sign the transaction but do NOT submit
+  --confirm                 Acknowledge submitting a real (testnet) transaction
+
   -h, --help                Show this help
+
+Execute mode also requires EXECUTE_ENABLED=true and EXECUTE_SECRET_KEY in the
+environment, and only ever runs against the Stellar testnet.
 `;
 
 async function main(): Promise<void> {
@@ -33,6 +42,8 @@ async function main(): Promise<void> {
       threshold: { type: 'string' },
       amount: { type: 'string' },
       assets: { type: 'string' },
+      'dry-run': { type: 'boolean', default: false },
+      confirm: { type: 'boolean', default: false },
       help: { type: 'boolean', short: 'h', default: false },
     },
   });
@@ -51,10 +62,10 @@ async function main(): Promise<void> {
       await runScan(env, { once: Boolean(values.once) });
       break;
     case 'execute':
-      process.stderr.write(
-        'execute mode is not wired up yet — it arrives in the next build step.\n',
-      );
-      process.exit(1);
+      await runExecute(env, {
+        confirm: Boolean(values.confirm),
+        dryRun: Boolean(values['dry-run']),
+      });
       break;
     default:
       process.stderr.write(`Unknown command "${mode}".\n\n${USAGE}`);

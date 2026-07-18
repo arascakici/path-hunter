@@ -1,4 +1,5 @@
 import { Asset, Horizon } from '@stellar/stellar-sdk';
+import type { Transaction, FeeBumpTransaction } from '@stellar/stellar-sdk';
 import type { AssetConfig } from '../config/assets.js';
 import type { Env } from '../config/env.js';
 import type { Logger } from '../logger/logger.js';
@@ -106,6 +107,17 @@ export class HorizonClient {
   /** Loads a full account record (balances, sequence) for transaction building. */
   loadAccount(publicKey: string): Promise<Horizon.AccountResponse> {
     return this.server.loadAccount(publicKey);
+  }
+
+  /** Submits a signed transaction, surfacing Stellar `result_codes` on failure. */
+  async submitTransaction(
+    tx: Transaction | FeeBumpTransaction,
+  ): Promise<Horizon.HorizonApi.SubmitTransactionResponse> {
+    try {
+      return await this.server.submitTransaction(tx);
+    } catch (err) {
+      throw new Error(`transaction submission failed: ${message(err)}`);
+    }
   }
 }
 
